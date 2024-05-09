@@ -1,11 +1,12 @@
-import { Link} from "react-router-dom";
+
 import "./App.css";
-import Navbar from "./Components/Navbar";
+import { AllRoutes } from "./routes/AllRoutes";
+
 
 function App() {
   return (
     <>
-    <Navbar/>
+    <AllRoutes/>
     </>
   );
 }
