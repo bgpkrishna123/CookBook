@@ -15,6 +15,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +24,7 @@ const Navbar = () => {
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} mb={2}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
@@ -45,50 +46,70 @@ const Navbar = () => {
                 as="a"
                 px={2}
                 py={1}
+                p={2}
                 rounded={"md"}
                 _hover={{
                   textDecoration: "none",
                   bg: "#319795",
+                  color: "white",
                 }}
                 href={"#"}
+                color="#319795"
+                fontWeight="bold"
+                fontSize="lg"
               >
-                EXPLORE
+                HOME
               </Box>
               <Box
                 as="a"
                 px={2}
                 py={1}
+                p={2}
                 rounded={"md"}
                 _hover={{
                   textDecoration: "none",
                   bg: "#319795",
+                  color: "white",
                 }}
                 href={"#"}
+                color="#319795"
+                fontWeight="bold"
+                fontSize="lg"
               >
                 MY RECIPETIN
               </Box>
+
               <Box
                 as="a"
                 px={2}
                 py={1}
+                p={2}
                 rounded={"md"}
                 _hover={{
                   textDecoration: "none",
                   bg: "#319795",
+                  color: "white",
                 }}
                 href={"#"}
+                color="#319795"
+                fontWeight="bold"
+                fontSize="lg"
               >
                 ACCOUNT
               </Box>
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
-            <Button variant={"solid"} colorScheme={"teal"} size={"sm"} mr={4}>
-              Log In
-            </Button>
-            <Button variant={"solid"} colorScheme={"teal"} size={"sm"} mr={4}>
-              SignUp
-            </Button>
+            <Link to="/login-signup">
+              <Button variant={"solid"} colorScheme={"teal"} mr={4}>
+                LogIn
+              </Button>
+            </Link>
+            <Link to="/login-signup">
+              <Button variant={"solid"} colorScheme={"teal"} mr={4}>
+                SignUp
+              </Button>
+            </Link>
             <Menu>
               <MenuButton
                 as={Button}
@@ -132,9 +153,9 @@ const Navbar = () => {
                   textDecoration: "none",
                   bg: useColorModeValue("gray.200", "gray.700"),
                 }}
-                href={"#"}
+                href={"/"}
               >
-                EXPLORE
+                HOME
               </Box>
               <Box
                 as="a"
