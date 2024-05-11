@@ -3,19 +3,14 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const authRouter = require("./routes/User");
 const router = require("./routes/recipeRoutes");
-const cors = require("cors");
-
-const auth = require("./middleware/auth");
 
 require("dotenv").config();
-const auth = require("./middleware/auth");
 const connectToDB = require("./config/db");
 const { geminiRouter } = require("./routes/gemini.route");
 require("dotenv").config();
-const cors = require('cors');
+const cors = require("cors");
 
 const app = express();
-
 
 app.use(bodyParser.json());
 
