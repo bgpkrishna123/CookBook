@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { userModel } = require("../model/user");
-//const { userModel } = require("../model/user");
 
 require("dotenv").config();
 
@@ -11,7 +10,7 @@ const register = async (req, res) => {
     const user = await userModel.findOne({ email });
     if (user) {
       return res
-        .status(401)
+        .status(409)
         .json({ message: "User is already registered. Please try to login." });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -30,8 +29,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const user = await userModel.findOne({ username });
+    const { email, password } = req.body;
+    const user = await userModel.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
