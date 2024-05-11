@@ -11,7 +11,7 @@ const auth = require("../middleware/auth");
 const { access } = require("../middleware/access");
 
 router.post("/", auth, access("creator"), createRecipe);
-router.get("/", auth, access("user", "creator"), getAllRecipes);
+router.get("/", getAllRecipes);
 
 router.get("/:id", auth, access("user", "creator"), getRecipeById);
 router.patch("/:id", auth, access("creator"), updateRecipe);

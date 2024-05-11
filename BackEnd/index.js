@@ -7,12 +7,14 @@ const router = require("./routes/recipeRoutes");
 const auth = require("./middleware/auth");
 require("dotenv").config();
 const connectToDB = require("./config/db");
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(express.json());
+app.use(cors());
 
 app.use("/users", authRouter);
 app.use("/recipes", router);
