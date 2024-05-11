@@ -8,14 +8,12 @@ const cors = require("cors");
 const auth = require("./middleware/auth");
 
 require("dotenv").config();
-const auth = require("./middleware/auth");
+
 const connectToDB = require("./config/db");
 const { geminiRouter } = require("./routes/gemini.route");
 require("dotenv").config();
-const cors = require('cors');
 
 const app = express();
-
 
 app.use(bodyParser.json());
 
