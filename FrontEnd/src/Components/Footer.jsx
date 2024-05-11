@@ -23,7 +23,7 @@ const Footer = () => {
         </Box>
         <Box className="footerSection">
           <Text fontWeight="bold" mb={4}>Follow Us</Text>
-          <Flex alignItems="center" gap={5}>
+          <Flex alignItems="center" gap={3}>
             <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
               <FaFacebookSquare className="icon" />
             </a>
