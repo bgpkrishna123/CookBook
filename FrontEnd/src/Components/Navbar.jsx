@@ -13,12 +13,17 @@ import {
   useColorModeValue,
   Stack,
   Image,
+  InputGroup,
+  InputLeftElement,
+  Input,
+  useMediaQuery 
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isWideEnough] = useMediaQuery("(min-width: 766px)"); 
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -35,7 +40,21 @@ const Navbar = () => {
           />
           <HStack spacing={8} alignItems={"center"}>
             <Box>
-              <Image src="../Logo/CookBook.jpg" alt="Logo" height={20} />
+              <Image
+                src="../Logo/CookBook.jpg"
+                alt="Logo"
+                height={20}
+                minW={70}
+              />
+            </Box>
+            <Box>
+              <InputGroup>
+                <InputLeftElement
+                  pointerEvents="none"
+                  children={<SearchIcon color="gray.300" />}
+                />
+                <Input type="text" placeholder="Search..." />
+              </InputGroup>
             </Box>
             <HStack
               as={"nav"}
@@ -56,7 +75,7 @@ const Navbar = () => {
                 href={"#"}
                 color="#319795"
                 fontWeight="bold"
-                fontSize="lg"
+                fontSize="md"
               >
                 HOME
               </Box>
@@ -74,42 +93,27 @@ const Navbar = () => {
                 href={"#"}
                 color="#319795"
                 fontWeight="bold"
-                fontSize="lg"
+                fontSize="md"
               >
-                MY RECIPETIN
-              </Box>
-
-              <Box
-                as="a"
-                px={2}
-                py={1}
-                p={2}
-                rounded={"md"}
-                _hover={{
-                  textDecoration: "none",
-                  bg: "#319795",
-                  color: "white",
-                }}
-                href={"#"}
-                color="#319795"
-                fontWeight="bold"
-                fontSize="lg"
-              >
-                ACCOUNT
+              MY RECIPETIN
               </Box>
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
-            <Link to="/login-signup">
-              <Button variant={"solid"} colorScheme={"teal"} mr={4}>
-                LogIn
-              </Button>
-            </Link>
-            <Link to="/login-signup">
-              <Button variant={"solid"} colorScheme={"teal"} mr={4}>
-                SignUp
-              </Button>
-            </Link>
+            {isWideEnough && ( 
+              <Flex>
+                <Link to="/login-signup">
+                  <Button variant={"solid"} colorScheme={"teal"} mr={4}>
+                    LogIn
+                  </Button>
+                </Link>
+                <Link to="/login-signup">
+                  <Button variant={"solid"} colorScheme={"teal"} mr={4}>
+                    SignUp
+                  </Button>
+                </Link>
+              </Flex>
+            )}
             <Menu>
               <MenuButton
                 as={Button}
@@ -181,7 +185,20 @@ const Navbar = () => {
                 }}
                 href={"#"}
               >
-                ACCOUNT
+                LogIn
+              </Box>
+              <Box
+                as="a"
+                px={2}
+                py={1}
+                rounded={"md"}
+                _hover={{
+                  textDecoration: "none",
+                  bg: useColorModeValue("gray.200", "gray.700"),
+                }}
+                href={"#"}
+              >
+                SignUp
               </Box>
             </Stack>
           </Box>

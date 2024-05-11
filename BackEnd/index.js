@@ -12,14 +12,16 @@ const auth = require("./middleware/auth");
 const connectToDB = require("./config/db");
 const { geminiRouter } = require("./routes/gemini.route");
 require("dotenv").config();
+const cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 3000;
-app.use(cors());
+
+
 app.use(bodyParser.json());
 
 app.use(express.json());
 const port = process.env.PORT || 3000;
+app.use(cors());
 
 app.use("/users", authRouter);
 app.use("/recipes", router);
