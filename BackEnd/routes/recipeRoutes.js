@@ -14,6 +14,7 @@ router.post("/", auth, access("creator"), createRecipe);
 router.get("/", auth, access("user", "creator"), getAllRecipes);
 
 router.get("/:id", auth, access("user", "creator"), getRecipeById);
+
 router.patch("/:id", auth, access("creator"), updateRecipe);
 
 router.delete("/:id", auth, access("creator"), deleteRecipe);

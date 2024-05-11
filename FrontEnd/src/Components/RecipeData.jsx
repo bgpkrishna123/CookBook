@@ -28,12 +28,12 @@ const RecipeData = () => {
     <Box >
       {recipes.map(recipe => (
         <Box key={recipe._id} className="recipe-card" borderWidth="1px" borderRadius="lg" overflow="hidden" p={4} mb={4} flex="1 1 400px" display="flex">
-          <Image src={recipe.image} alt={recipe.title} flex="1" mr={2} height={400} w={200}  marginLeft={20}/>
+          <Image src={recipe.image} alt={recipe.title} flex="1" mr={2} height={400} w={200}  marginLeft={20} borderRadius={50}/>
           <Box flex="1"marginLeft={20} >
             <Heading as="h2" size="lg">{recipe.title}</Heading>
             <Text mt={2}>{recipe.description}</Text>
             <UnorderedList mt={2}>
-              <Text fontWeight={"bold"}>Ingredients</Text>
+              <Text fontWeight={"bold"} >Ingredients</Text>
               {recipe.ingredients.map((ingredient, index) => (
                 <ListItem key={index}>{ingredient}</ListItem>
               ))}
