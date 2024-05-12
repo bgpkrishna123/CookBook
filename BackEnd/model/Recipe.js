@@ -6,7 +6,7 @@ const recipeSchema = new mongoose.Schema({
   description: String,
   ingredients: [String],
   instructions: [String],
-
+  category: { type: String },
   dietaryRestrictions: [String],
   healthiness: { type: String, enum: ["Healthy", "Moderate", "Indulgent"] },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

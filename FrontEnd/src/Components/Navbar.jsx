@@ -24,6 +24,7 @@ import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import url from "./vars";
+import { Logo } from "./Logo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -86,13 +87,8 @@ const Navbar = () => {
             onClick={toggle}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box>
-              <Image
-                src="../Logo/CookBook.jpg"
-                alt="Logo"
-                height={20}
-                minW={70}
-              />
+            <Box as="a" href="/">
+              <Logo />
             </Box>
             <Flex>
               <InputGroup>

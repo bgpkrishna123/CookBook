@@ -5,10 +5,12 @@ const authRouter = require("./routes/User");
 const router = require("./routes/recipeRoutes");
 
 require("dotenv").config();
+
 const connectToDB = require("./config/db");
 const { geminiRouter } = require("./routes/gemini.route");
 require("dotenv").config();
 const cors = require("cors");
+
 
 const app = express();
 

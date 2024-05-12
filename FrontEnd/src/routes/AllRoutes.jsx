@@ -1,7 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "../page/Home";
 import LoginPage from "../page/Login";
-import RecipeData from './../Components/RecipeData';
+
+import RecipeData from "./../Components/RecipeData";
+import Dashboard from "../page/Dashboard";
+
 
 export const AllRoutes = () => {
     return (
