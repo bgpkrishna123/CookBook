@@ -6,6 +6,7 @@ import axios from "axios";
 import "../Styles/LoginPage.css";
 import Heading from "../Components/Heading";
 import { useToast } from "@chakra-ui/react";
+import url from "../Components/vars";
 
 const LoginPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -38,7 +39,7 @@ const LoginPage = () => {
 
     if (isLogin) {
       try {
-        const response = await axios.post("http://localhost:7700/users/login", {
+        const response = await axios.post(`${url}/users/login`, {
           email,
           password,
         });
@@ -50,7 +51,8 @@ const LoginPage = () => {
           isClosable: true,
           position: "top",
         });
-        localStorage.setItem("userDetails", response.data);
+        
+        localStorage.setItem("userDetails", JSON.stringify(response.data));
         navigate("/");
       } catch (error) {
         setError(error.response.data.message);
@@ -61,7 +63,7 @@ const LoginPage = () => {
         return;
       }
       try {
-        const response = await axios.post("http://localhost:7700/users/register", {
+        const response = await axios.post(`${url}/users/register`, {
           username,
           email,
           password,
@@ -75,7 +77,7 @@ const LoginPage = () => {
           position: "top",
         });
 
-        const loginResponse = await axios.post("http://localhost:7700/users/login", {
+        const loginResponse = await axios.post(`${url}/users/login`, {
           email,
           password,
         });

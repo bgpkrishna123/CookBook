@@ -8,6 +8,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useParams } from "react-router-dom";
 import "../Styles/RecepeData.css";
+import url from "./vars";
 
 const RecipeData = () => {
   const [recipes, setRecipes] = useState([]);
@@ -15,7 +16,7 @@ const RecipeData = () => {
 
   const { id } = useParams();
   useEffect(() => {
-    axios.get(`http://localhost:7700/recipes/${id}`)
+    axios.get(`${url}/recipes/${id}`)
       .then(response => {
         setLoading(false);
         if (Array.isArray(response.data)) {
