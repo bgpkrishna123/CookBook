@@ -13,12 +13,12 @@ const cors = require("cors");
 const { keepAlive } = require("./keepalive");
 
 const app = express();
+app.use(cors());
 
 app.use(bodyParser.json());
 
 app.use(express.json());
 const port = process.env.PORT || 3000;
-app.use(cors());
 
 app.use("/users", authRouter);
 app.use("/recipes", router);

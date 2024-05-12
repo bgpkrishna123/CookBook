@@ -12,7 +12,6 @@ import {
   NumberInputStepper,
   Select,
   Text,
-  filter,
   useDisclosure,
 } from "@chakra-ui/react";
 import Axios from "axios";
@@ -45,7 +44,9 @@ const Dashboard = () => {
   const [modalItem, setModalItem] = useState(1);
   const [offset, setOffset] = useState((page - 1) * limit);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const getData = async () => {
+    console.log(url);
     try {
       const res = await Axios.get(url + "/recipes");
       setData(res.data);
@@ -78,7 +79,6 @@ const Dashboard = () => {
 
   const handleDelete = async (id) => {
     const address = `${url}/recipes/${id}`;
-    console.log(url);
     const token = localStorage.getItem("token");
     try {
       await axios.delete(address, {
@@ -99,6 +99,10 @@ const Dashboard = () => {
   useEffect(() => {
     setOffset((page - 1) * limit);
   }, [page, limit]);
+
+  useEffect(() => {
+    console.log(filtered);
+  }, [page, limit, data, filtered]);
 
   return (
     <>
@@ -165,38 +169,41 @@ const Dashboard = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {filtered.slice(offset, offset + limit).map((item, idx) => {
-                  return (
-                    <Tr key={idx}>
-                      <Td>{offset + idx + 1}</Td>
-                      <Td>{item.title}</Td>
-                      <Td>
-                        <Text noOfLines={3}>{item.description}</Text>
-                      </Td>
-                      <Td>{item.category}</Td>
-                      <Td>
-                        <Button
-                          onClick={() => {
-                            onOpen();
-                            setModalItem(item._id);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                      </Td>
-                      <Td>
-                        <Button
-                          colorScheme="red"
-                          onClick={() => {
-                            handleDelete(item._id);
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </Td>
-                    </Tr>
-                  );
-                })}
+                {Array.isArray(filtered) &&
+                  filtered
+                    .map((item, idx) => {
+                      return (
+                        <Tr key={idx}>
+                          <Td>{offset + idx + 1}</Td>
+                          <Td>{item.title}</Td>
+                          <Td>
+                            <Text noOfLines={3}>{item.description}</Text>
+                          </Td>
+                          <Td>{item.category}</Td>
+                          <Td>
+                            <Button
+                              onClick={() => {
+                                onOpen();
+                                setModalItem(item._id);
+                              }}
+                            >
+                              Edit
+                            </Button>
+                          </Td>
+                          <Td>
+                            <Button
+                              colorScheme="red"
+                              onClick={() => {
+                                handleDelete(item._id);
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </Td>
+                        </Tr>
+                      );
+                    })
+                    .slice(offset, offset + limit)}
               </Tbody>
             </Table>
           </TableContainer>
