@@ -8,7 +8,7 @@ async function keepAlive() {
       console.log(error);
     }
     console.log("keepAlive");
-  }, 1000 * 60 * 2);
+  }, 1000 * 60 * 1);
 }
 
 module.exports = { keepAlive };
