@@ -10,6 +10,18 @@ async function createRecipe(req, res) {
   }
 }
 
+//search by title 
+async function searchRecipesByTitle(req, res) {
+  try {
+    const title = req.body.title;
+    const recipes = await Recipe.find({ title: { $regex: `^${title}$`, $options: "i" } });
+    res.json(recipes);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+
 // Get all recipes
 async function getAllRecipes(req, res) {
   try {
@@ -67,4 +79,5 @@ module.exports = {
   getRecipeById,
   updateRecipe,
   deleteRecipe,
+  searchRecipesByTitle,
 };
