@@ -11,6 +11,7 @@ import chatbot from "./assets/chatbot.png";
 import { CloseIcon } from "@chakra-ui/icons";
 function App() {
   const [bot, setBot] = useState(false);
+ 
   return (
     <>
       <Box position="relative">
