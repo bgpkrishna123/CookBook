@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Grid, Box, Button, Image, Spinner, Flex } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import url from './vars';
 
 
 const Container = () => {
@@ -16,7 +17,7 @@ const Container = () => {
     const fetchData = async () => {
       setLoading(true); 
       try {
-        const response = await axios.get(`http://localhost:7700/recipes/?page=${currentPage}&limit=${itemsPerPage}`);
+        const response = await axios.get(`${url}/recipes/?page=${currentPage}&limit=${itemsPerPage}`);
         setData((prevData) => [...prevData, ...response.data]);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -53,7 +54,6 @@ const Container = () => {
   }, [loading]);
 
   const handleDetailClick = (id) => {
-    //console.log(id);
     navigate(`/recipe-data/${id}`);
   };
 

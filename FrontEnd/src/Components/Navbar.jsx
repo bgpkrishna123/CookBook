@@ -23,6 +23,7 @@ import {
 import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import url from "./vars";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,12 +32,14 @@ const Navbar = () => {
   const [userData, setUserData] = useState("");
   const toast = useToast(); 
   
+  
 
   useEffect(() => {
-    const userDetails = localStorage.getItem('userDetails');
+
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'))|| [];
     if (userDetails) {
       const token = localStorage.getItem('token'); 
-      axios.get("http://localhost:7700/users", {
+      axios.get(`${url}/users`, {
         headers: {
           Authorization: `Bearer ${token}`, 
           "Content-Type": "application/json",
