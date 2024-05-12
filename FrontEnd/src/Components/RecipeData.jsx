@@ -81,11 +81,11 @@ const RecipeData = () => {
                     <Heading as="h2" size="lg" className="title">{recipe.title}</Heading>
                     <Text mt={2} fontWeight="bold" color="gray.600" className="description">{recipe.description}</Text>
                     <Box>
-                      <Text mt={2} fontWeight="bold" color="gray.600" className="dietary">Dietary Restrictions: {recipe.dietaryRestrictions.join(', ')}</Text>
-                      <Text mt={2} fontWeight="bold" color="gray.600" className="healthiness">Healthiness: {recipe.healthiness}</Text>
-                      <Text mt={2} fontWeight="bold" color="gray.600" className="created-by">Created By: {recipe.createdBy}</Text>
-                      <Text mt={2} fontWeight="bold" color="gray.600" className="created-at">Created At: {new Date(recipe.createdAt).toLocaleDateString()}</Text>
-                      <Text mt={2} fontWeight="bold" color="gray.600" className="cook-time">Cook Time: {recipe.cookTime}</Text>
+                      <Text mt={2} fontWeight="bold" color="gray.600" className="dietary, ingredient-item" >Dietary Restrictions: {recipe.dietaryRestrictions.join(', ')}</Text>
+                      <Text mt={2} fontWeight="bold" color="gray.600" className="healthiness, ingredient-item">Healthiness: {recipe.healthiness}</Text>
+                      <Text mt={2} fontWeight="bold" color="gray.600" className="created-by, ingredient-item">Created By: {recipe.createdBy}</Text>
+                      <Text mt={2} fontWeight="bold" color="gray.600" className="created-at, ingredient-item">Created At: {new Date(recipe.createdAt).toLocaleDateString()}</Text>
+                      <Text mt={2} fontWeight="bold" color="gray.600" className="cook-time, ingredient-item">Cook Time: {recipe.cookTime}</Text>
                     </Box>
                   </Box>
                 </Box>
