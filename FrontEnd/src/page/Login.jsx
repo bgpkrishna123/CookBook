@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Flex, Box, Button, Image, Input, Text } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-import axios from "axios"; 
+import axios from "axios";
 import "../Styles/LoginPage.css";
 import Heading from "../Components/Heading";
 import { useToast } from "@chakra-ui/react";
@@ -51,9 +51,13 @@ const LoginPage = () => {
           isClosable: true,
           position: "top",
         });
-        
+
         localStorage.setItem("userDetails", JSON.stringify(response.data));
-        navigate("/");
+        if (response.data.role == "creator") {
+          navigate("/dashboard");
+        } else {
+          navigate("/");
+        }
       } catch (error) {
         setError(error.response.data.message);
       }
@@ -92,7 +96,7 @@ const LoginPage = () => {
 
   const togglePage = () => {
     setIsLogin(!isLogin);
-    setError(""); 
+    setError("");
   };
 
   return (

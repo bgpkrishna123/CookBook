@@ -62,7 +62,7 @@ const RecipeData = () => {
     <>
       <Navbar/>
       <Box position="fixed" top="180px" right="20px" zIndex="999">
-  <Button onClick={toggleFavorite}>
+  <Button onClick={toggleFavorite} variant="unstyled" display="flex" flexDirection="column" alignItems="center">
     {favorited ? (
       <>
         <Image
@@ -71,8 +71,7 @@ const RecipeData = () => {
           src="https://cdn-icons-png.flaticon.com/128/2589/2589175.png"
           alt="Red Heart Icon"
         />
-       
-        <p color='black'>Saved</p>
+        <Text color='black'>Saved</Text>
       </>
     ) : (
       <>
@@ -82,12 +81,13 @@ const RecipeData = () => {
           src="https://cdn-icons-png.flaticon.com/128/151/151910.png"
           alt="Transparent Heart Icon"
         />
-        <br />
-        <p color='black'>Save</p>
+        <Text color='black'>Save</Text>
       </>
     )}
   </Button>
 </Box>
+
+
 
       <Box
         backgroundImage="url('https://images.pexels.com/photos/4397925/pexels-photo-4397925.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')" 

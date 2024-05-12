@@ -37,7 +37,7 @@ import axios from "axios";
 import url from "./vars";
 import { Logo } from "./Logo";
 
-const Navbar = () => {
+const Navbar = ({filter,setFilter}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWideEnough] = useMediaQuery("(min-width: 766px)");
@@ -60,7 +60,6 @@ const Navbar = () => {
         .then((response) => {
           setUserData(response.data);
           localStorage.setItem("userInfo", JSON.stringify(response.data) || []);
-
           setIsLoggedIn(true);
         })
         .catch((error) => {
@@ -123,7 +122,7 @@ const Navbar = () => {
                   pointerEvents="none"
                   children={<SearchIcon color="gray.300" />}
                 />
-                <Input type="text" placeholder="Search..." />
+                <Input type="text" value={filter} onChange={(e)=>setFilter(e.target.value)} placeholder="Search..." />
               </InputGroup>
               <Box margin={2}>
                 <Menu>
@@ -148,10 +147,10 @@ const Navbar = () => {
                     </svg>
                   </MenuButton>
                   <MenuList>
-                    <MenuItem fontWeight={"bold"}>Veg</MenuItem>
-                    <MenuItem fontWeight={"bold"}>Non-Veg</MenuItem>
+                    <MenuItem onClick={()=>setFilter("Vegetarian")} fontWeight={"bold"}>Veg</MenuItem>
+                    <MenuItem onClick={()=>setFilter("Non-Vegetarian")} fontWeight={"bold"}>Non-Veg</MenuItem>
                     <MenuDivider />
-                    <MenuItem fontWeight={"bold"}>Veg & Non-Veg</MenuItem>
+                    <MenuItem fontWeight={"bold"} onClick={()=>setFilter("")}>Veg & Non-Veg</MenuItem>
                   </MenuList>
                 </Menu>
               </Box>
@@ -193,6 +192,7 @@ const Navbar = () => {
                 color="#319795"
                 fontWeight="bold"
                 fontSize="md"
+                onClick={()=> navigate("/my-recipetin")}
               >
                 MY RECIPETIN
               </Box>
@@ -290,6 +290,7 @@ const Navbar = () => {
                   bg: useColorModeValue("gray.200", "gray.700"),
                 }}
                 href={"/"}
+                fontWeight={"bold"}
               >
                 HOME
               </Box>
@@ -302,7 +303,8 @@ const Navbar = () => {
                   textDecoration: "none",
                   bg: useColorModeValue("gray.200", "gray.700"),
                 }}
-                href={"#"}
+                onClick={()=> navigate("/my-recipetin")}
+                fontWeight={"bold"}
               >
                 MY RECIPETIN
               </Box>
@@ -318,6 +320,7 @@ const Navbar = () => {
                       bg: useColorModeValue("gray.200", "gray.700"),
                     }}
                     href={"/login-signup"}
+                    fontWeight={"bold"}
                   >
                     LogIn
                   </Box>
@@ -331,6 +334,7 @@ const Navbar = () => {
                       bg: useColorModeValue("gray.200", "gray.700"),
                     }}
                     href={"/login-signup"}
+                    fontWeight={"bold"}
                   >
                     SignUp
                   </Box>

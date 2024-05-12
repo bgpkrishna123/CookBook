@@ -1,26 +1,50 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Grid, Box, Button, Image, Spinner, Flex } from '@chakra-ui/react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import url from './vars';
 
-const Container = () => {
+
+const Container = ({filter}) => {
   const [data, setData] = useState([]);
+  const [filtered, setFiltered] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(12);
+  const [itemsPerPage] = useState(2);
   const [loading, setLoading] = useState(false);
+  
+
+
   const navigate = useNavigate();
   const sentinelRef = useRef(null);
-  const { title } = useParams(); // Get the title from URL params
+  
+
+  function handleSearch() {
+    const keyword = filter;
+    if (keyword) {
+      setFiltered(() => {
+        return data.filter((item) => {
+            if(keyword == "Vegetarian" ||keyword == "Non-Vegetarian"){
+                return item.category==keyword
+            }
+          let values = Object.values(item);
+          return values.some((value) => {
+            let cur = typeof value == "string" ? value.toLowerCase() : value;
+            return cur.includes(keyword.toLowerCase());
+          });
+        });
+      });
+    } else {
+      setFiltered(data);
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      setLoading(true); 
       try {
         const response = await axios.get(`${url}/recipes/?page=${currentPage}&limit=${itemsPerPage}`);
-        // Filter the data based on the title if it exists
-        const filteredData = title ? response.data.filter(item => item.title.toLowerCase().includes(title.toLowerCase())) : response.data;
-        setData((prevData) => [...prevData, ...filteredData]);
+        setData((prevData) => [...prevData, ...response.data]);
+        setFiltered((prevData) => [...prevData, ...response.data]);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -29,7 +53,7 @@ const Container = () => {
     };
 
     fetchData();
-  }, [currentPage, itemsPerPage, title]); // Include title in dependency array
+  }, [currentPage, itemsPerPage]);
 
   useEffect(() => {
     const options = {
@@ -59,12 +83,18 @@ const Container = () => {
     navigate(`/recipe-data/${id}`);
   };
 
+  useEffect(()=>{
+    handleSearch();
+  },[filter])
+
+
+
   return (
     <Flex justifyContent="center">
       <Flex flexDirection="column" width={{ base: '100%', md: '90%', lg: '80%' }}>
         <Box p={5}>
           <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }} gap={4}>
-            {data.map((item, index) => (
+            {filtered.map((item, index) => (
               <Box key={index} borderWidth="1px" borderRadius="lg" overflow="hidden" boxShadow="md">
                 <Image src={item.image} alt={item.title} />
                 <Box p="6">
@@ -85,7 +115,7 @@ const Container = () => {
             <div ref={sentinelRef} style={{ visibility: 'hidden', height: 1 }}></div>
           </Grid>
           {loading && (
-            <Flex justifyContent="center" alignItems="center" marginTop="20px">
+            <Flex justifyContent="center" alignItems="center" marginTop="20px"> 
               <Spinner color="teal" size="xl" thickness="4px" />
             </Flex>
           )}
