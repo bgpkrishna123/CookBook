@@ -4,6 +4,20 @@ const { userModel } = require("../model/user");
 
 require("dotenv").config();
 
+const userDetails = async function(req, res) {
+  const id = req.userId;
+  console.log(id);
+  try {
+    const user = await userModel.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json(user);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
 const register = async (req, res) => {
   const { username, email, password, role } = req.body;
   try {
@@ -56,4 +70,5 @@ module.exports = {
   register,
   login,
   logout,
+  userDetails,
 };

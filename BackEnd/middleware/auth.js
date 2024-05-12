@@ -12,7 +12,7 @@ const auth = (req, res, next) => {
         const user = await userModel.findOne({ _id: id });
 
         req.role = user.role;
-        // console.log(req.role);
+        req.userId = id;
         next();
       } else {
         return res.status(401).json({
