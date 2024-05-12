@@ -42,7 +42,7 @@ const LoginPage = () => {
           email,
           password,
         });
-        console.log("Login success:", response.data);
+        localStorage.setItem("token", response.data.token);
         toast({
           title: "Login Successful",
           status: "success",
@@ -50,6 +50,7 @@ const LoginPage = () => {
           isClosable: true,
           position: "top",
         });
+        localStorage.setItem("userDetails", response.data);
         navigate("/");
       } catch (error) {
         setError(error.response.data.message);
@@ -78,6 +79,7 @@ const LoginPage = () => {
           email,
           password,
         });
+        localStorage.setItem("userDetails", loginResponse.data);
         console.log("Login success:", loginResponse.data);
         navigate("/");
       } catch (error) {

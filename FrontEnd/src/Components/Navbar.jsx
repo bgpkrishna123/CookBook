@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -16,14 +16,58 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
-  useMediaQuery 
+  useMediaQuery, 
+  Avatar,
+  useToast 
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isWideEnough] = useMediaQuery("(min-width: 766px)"); 
+  const [isWideEnough] = useMediaQuery("(min-width: 766px)");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState("");
+  const toast = useToast(); 
+  
+
+  useEffect(() => {
+    const userDetails = localStorage.getItem('userDetails');
+    if (userDetails) {
+      const token = localStorage.getItem('token'); 
+      axios.get("http://localhost:7700/users", {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+          "Content-Type": "application/json",
+        },
+      })
+      .then(response => {
+        setUserData(response.data); 
+        setIsLoggedIn(true);
+      })
+      .catch(error => {
+        console.error("Error:", error.message);
+        setIsLoggedIn(false);
+      });
+    }
+  }, []);
+  
+
+  const handleLogout = () => {
+    localStorage.removeItem('userDetails');
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    setUserData("");
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+      position: "top",
+    });
+  };
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -33,7 +77,7 @@ const Navbar = () => {
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon boxSize={7}/>}
             aria-label={"Open Menu"}
             display={{ md: "none" }}
             onClick={toggle}
@@ -47,7 +91,7 @@ const Navbar = () => {
                 minW={70}
               />
             </Box>
-            <Box>
+            <Flex>
               <InputGroup>
                 <InputLeftElement
                   pointerEvents="none"
@@ -55,7 +99,37 @@ const Navbar = () => {
                 />
                 <Input type="text" placeholder="Search..." />
               </InputGroup>
-            </Box>
+              <Box margin={2}>
+              <Menu >
+                <MenuButton
+                  as={Button}
+                  rounded={"full"}
+                  variant={"link"}
+                  cursor={"pointer"}
+                  minW={0}
+                >
+                  <svg
+                    width="30"
+                    height="30"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    cursor="pointer"
+                  >
+                    <path
+                      fill="#F58332"
+                      d="M9 5a1 1 0 1 0 0 2a1 1 0 0 0 0-2zM6.17 5a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 0 1 0-2h1.17zM15 11a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h7.17zM9 17a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h1.17z"
+                    />
+                  </svg>
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>Veg</MenuItem>
+                  <MenuItem>Non-Veg</MenuItem>
+                  <MenuDivider />
+                  <MenuItem>Veg & Non-Veg</MenuItem>
+                </MenuList>
+              </Menu>
+              </Box>
+            </Flex>
             <HStack
               as={"nav"}
               spacing={4}
@@ -65,7 +139,6 @@ const Navbar = () => {
                 as="a"
                 px={2}
                 py={1}
-                p={2}
                 rounded={"md"}
                 _hover={{
                   textDecoration: "none",
@@ -83,7 +156,6 @@ const Navbar = () => {
                 as="a"
                 px={2}
                 py={1}
-                p={2}
                 rounded={"md"}
                 _hover={{
                   textDecoration: "none",
@@ -95,53 +167,61 @@ const Navbar = () => {
                 fontWeight="bold"
                 fontSize="md"
               >
-              MY RECIPETIN
+                MY RECIPETIN
               </Box>
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
-            {isWideEnough && ( 
-              <Flex>
-                <Link to="/login-signup">
-                  <Button variant={"solid"} colorScheme={"teal"} mr={4}>
-                    LogIn
-                  </Button>
-                </Link>
-                <Link to="/login-signup">
-                  <Button variant={"solid"} colorScheme={"teal"} mr={4}>
-                    SignUp
-                  </Button>
-                </Link>
-              </Flex>
+            {isWideEnough ? (
+              isLoggedIn ? (
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={"full"}
+                    variant={"link"}
+                    cursor={"pointer"}
+                    minW={0}
+                  >
+                    <Avatar name={userData.username} src={userData.Image} />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>Account</MenuItem>
+                    <MenuDivider />
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <Flex>
+                  <Link to="/login-signup">
+                    <Button variant={"solid"} colorScheme={"teal"} mr={4}>
+                      LogIn
+                    </Button>
+                  </Link>
+                  <Link to="/login-signup">
+                    <Button variant={"solid"} colorScheme={"teal"} mr={4}>
+                      SignUp
+                    </Button>
+                  </Link>
+                </Flex>
+              )
+            ) : (
+              <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={"full"}
+                    variant={"link"}
+                    cursor={"pointer"}
+                    minW={0}
+                  >
+                    <Avatar name={userData.username} src={userData.Image} />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>Account</MenuItem>
+                    <MenuDivider />
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  </MenuList>
+                </Menu>
             )}
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={"full"}
-                variant={"link"}
-                cursor={"pointer"}
-                minW={0}
-              >
-                <svg
-                  width="30"
-                  height="30"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  cursor="pointer"
-                >
-                  <path
-                    fill="#F58332"
-                    d="M9 5a1 1 0 1 0 0 2a1 1 0 0 0 0-2zM6.17 5a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 0 1 0-2h1.17zM15 11a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h7.17zM9 17a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h1.17z"
-                  />
-                </svg>
-              </MenuButton>
-              <MenuList>
-                <MenuItem>Veg</MenuItem>
-                <MenuItem>Non-Veg</MenuItem>
-                <MenuDivider />
-                <MenuItem>Veg & Non-Veg</MenuItem>
-              </MenuList>
-            </Menu>
           </Flex>
         </Flex>
 
@@ -174,32 +254,36 @@ const Navbar = () => {
               >
                 MY RECIPETIN
               </Box>
-              <Box
-                as="a"
-                px={2}
-                py={1}
-                rounded={"md"}
-                _hover={{
-                  textDecoration: "none",
-                  bg: useColorModeValue("gray.200", "gray.700"),
-                }}
-                href={"#"}
-              >
-                LogIn
-              </Box>
-              <Box
-                as="a"
-                px={2}
-                py={1}
-                rounded={"md"}
-                _hover={{
-                  textDecoration: "none",
-                  bg: useColorModeValue("gray.200", "gray.700"),
-                }}
-                href={"#"}
-              >
-                SignUp
-              </Box>
+              {!isLoggedIn && (
+                <>
+                  <Box
+                    as="a"
+                    px={2}
+                    py={1}
+                    rounded={"md"}
+                    _hover={{
+                      textDecoration: "none",
+                      bg: useColorModeValue("gray.200", "gray.700"),
+                    }}
+                    href={"/login-signup"}
+                  >
+                    LogIn
+                  </Box>
+                  <Box
+                    as="a"
+                    px={2}
+                    py={1}
+                    rounded={"md"}
+                    _hover={{
+                      textDecoration: "none",
+                      bg: useColorModeValue("gray.200", "gray.700"),
+                    }}
+                    href={"/login-signup"}
+                  >
+                    SignUp
+                  </Box>
+                </>
+              )}
             </Stack>
           </Box>
         ) : null}

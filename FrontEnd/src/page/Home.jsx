@@ -4,6 +4,7 @@ import Navbar from "../Components/Navbar";
 
 import Footer from "../Components/Footer";
 import Banner from "../Components/Banner";
+import Container from "../Components/Container";
 
 
 
@@ -12,6 +13,7 @@ const Home = () => {
     <>
       <Navbar />  
       <Banner/>
+      <Container/>
       <Footer />
 
     </>
