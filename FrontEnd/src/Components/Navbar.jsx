@@ -31,9 +31,9 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import url from "./vars";
-import { Logo } from "./Logo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +42,8 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState([]);
   const toast = useToast(); 
-  
+  const navigate = useNavigate();
+
   useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem('userDetails')) || {};
     if (userDetails) {
@@ -80,12 +81,17 @@ const Navbar = () => {
       isClosable: true,
       position: "top",
     });
+    
+    
   };
 
   const toggle = () => setIsOpen(!isOpen);
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const handleSignUpClick = () => {
+    navigate("/login-signup");
+  };
 
   return (
     <>
@@ -130,7 +136,7 @@ const Navbar = () => {
               </Box>
             </Flex>
             <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
-              <Box as="a" px={2} py={1} rounded={"md"} _hover={{ textDecoration: "none", bg: "#319795", color: "white" }} href={"#"} color="#319795" fontWeight="bold" fontSize="md">
+              <Box as="a" px={2} py={1} rounded={"md"} _hover={{ textDecoration: "none", bg: "#319795", color: "white" }} href={"#"} color="#319795" fontWeight="bold" fontSize="md" onClick={()=>navigate("/")}>
                 HOME
               </Box>
               <Box as="a" px={2} py={1} rounded={"md"} _hover={{ textDecoration: "none", bg: "#319795", color: "white" }} href={"#"} color="#319795" fontWeight="bold" fontSize="md">
@@ -173,21 +179,33 @@ const Navbar = () => {
               )
             ) : (
               <Menu>
-                  <MenuButton
-                    as={Button}
-                    rounded={"full"}
-                    variant={"link"}
-                    cursor={"pointer"}
-                    minW={0}
-                  >
-                    <Avatar name={userData.username} src={userData.Image} />
-                  </MenuButton>
-                  <MenuList >
+              <MenuButton
+                as={Button}
+                rounded={"full"}
+                variant={"link"}
+                cursor={"pointer"}
+                minW={0}
+              >
+                <Avatar name={userData.username} src={userData.Image} />
+              </MenuButton>
+              <MenuList>
+                {isLoggedIn ? (
+                  <>
                     <MenuItem fontWeight={"bold"} onClick={openModal}>Account</MenuItem>
                     <MenuDivider />
                     <MenuItem fontWeight={"bold"} onClick={handleLogout}>Logout</MenuItem>
-                  </MenuList>
-                </Menu>
+                  </>
+                ) : (
+                 <>
+       
+                    <MenuItem fontWeight={"bold"} onClick={handleSignUpClick}>Sign Up</MenuItem>
+                    <MenuDivider />
+                    <MenuItem fontWeight={"bold"} onClick={handleSignUpClick}>LogIn</MenuItem>
+                    </>
+                )}
+              </MenuList>
+            </Menu>
+            
             )}
           </Flex>
         </Flex>
@@ -243,9 +261,6 @@ const Navbar = () => {
     <Text fontSize="lg" _hover={{ color: useColorModeValue("teal.500", "teal.300")  ,fontWeight:"bold"}}>
       Role: {userData.role}
     </Text>
-   
-    
-    {/* Add more details as needed */}
   </Stack>
 </ModalBody>
     <ModalFooter>
