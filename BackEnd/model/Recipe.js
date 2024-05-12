@@ -8,7 +8,10 @@ const recipeSchema = new mongoose.Schema({
   instructions: [String],
   category: { type: String },
   dietaryRestrictions: [String],
-  healthiness: { type: String, enum: ["Healthy", "Moderate", "Indulgent"] },
+  healthiness: {
+    type: String,
+    enum: ["High", "Low", "Healthy", "Moderate", "Indulgent"],
+  },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   createdAt: { type: Date, default: Date.now },
   cookTime: { type: String, required: true },

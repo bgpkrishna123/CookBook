@@ -33,8 +33,9 @@ import Nav from "../Components/AdminNavbar";
 import EditRecipieModal from "../Components/EditRecipieModal";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useDebounce } from "../utils/debounce.hook";
+import axios from "axios";
+import url from "../Components/vars";
 
-let url = import.meta.env.VITE_DEPLOYED_URL + "/recipes";
 const Dashboard = () => {
   const debouncedSearch = useDebounce(handleSearch, 1000);
   const [data, setData] = useState([]);
@@ -46,7 +47,7 @@ const Dashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const getData = async () => {
     try {
-      const res = await Axios.get(url);
+      const res = await Axios.get(url + "/recipes");
       setData(res.data);
       setFiltered(res.data);
     } catch (error) {
@@ -75,6 +76,22 @@ const Dashboard = () => {
     }
   }
 
+  const handleDelete = async (id) => {
+    const address = `${url}/recipes/${id}`;
+    console.log(url);
+    const token = localStorage.getItem("token");
+    try {
+      await axios.delete(address, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      await getData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getData();
   }, []);
@@ -93,6 +110,7 @@ const Dashboard = () => {
             onOpen={onOpen}
             onClose={onClose}
             item={filtered.find((item) => item._id == modalItem)}
+            getData={getData}
           />
         )}
         <HStack mt={5}>
@@ -167,7 +185,14 @@ const Dashboard = () => {
                         </Button>
                       </Td>
                       <Td>
-                        <Button colorScheme="red">Delete</Button>
+                        <Button
+                          colorScheme="red"
+                          onClick={() => {
+                            handleDelete(item._id);
+                          }}
+                        >
+                          Delete
+                        </Button>
                       </Td>
                     </Tr>
                   );

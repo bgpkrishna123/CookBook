@@ -17,8 +17,9 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import url from "./vars";
 
-function EditRecipieModal({ isOpen, onOpen, onClose, item }) {
+function EditRecipieModal({ isOpen, onOpen, onClose, item, getData }) {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [data, setData] = useState(item);
@@ -28,9 +29,17 @@ function EditRecipieModal({ isOpen, onOpen, onClose, item }) {
   };
 
   const handleSubmit = async (e) => {
+    const address = `${url}/recipes/${item._id}`;
     e.preventDefault();
+    const token = localStorage.getItem("token");
     try {
-      console.log(data);
+      let res = await axios.patch(address, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      await getData();
+      onClose();
     } catch (error) {
       console.log(error);
     }
