@@ -10,7 +10,7 @@ const connectToDB = require("./config/db");
 const { geminiRouter } = require("./routes/gemini.route");
 require("dotenv").config();
 const cors = require("cors");
-
+const { keepAlive } = require("./keepalive");
 
 const app = express();
 
@@ -28,7 +28,8 @@ app.listen(port, () => {
   try {
     connectToDB(process.env.DB_URL);
     console.log("we are connecte to database successfully");
-    console.log(`server is runnin at http://localhost:${port} `);
+    console.log(`server is runnin at port ${port} `);
+    keepAlive();
   } catch (err) {
     console.log(err.message);
   }
