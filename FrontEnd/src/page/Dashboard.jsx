@@ -48,7 +48,7 @@ const Dashboard = () => {
   const getData = async () => {
     console.log(url);
     try {
-      const res = await Axios.get(url + "recipes");
+      const res = await Axios.get(url + "/recipes");
       setData(res.data);
       setFiltered(res.data);
     } catch (error) {

@@ -29,7 +29,7 @@ function EditRecipieModal({ isOpen, onOpen, onClose, item, getData }) {
   };
 
   const handleSubmit = async (e) => {
-    const address = `${url}recipes/${item._id}`;
+    const address = `${url}/recipes/${item._id}`;
     e.preventDefault();
     const token = localStorage.getItem("token");
     try {
