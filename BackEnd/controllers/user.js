@@ -1,9 +1,22 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { userModel } = require("../model/user");
-//const { userModel } = require("../model/user");
 
 require("dotenv").config();
+
+const userDetails = async function(req, res) {
+  const id = req.userId;
+  console.log(id);
+  try {
+    const user = await userModel.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json(user);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
 
 const register = async (req, res) => {
   const { username, email, password, role } = req.body;
@@ -11,7 +24,7 @@ const register = async (req, res) => {
     const user = await userModel.findOne({ email });
     if (user) {
       return res
-        .status(401)
+        .status(409)
         .json({ message: "User is already registered. Please try to login." });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -30,8 +43,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const user = await userModel.findOne({ username });
+    const { email, password } = req.body;
+    const user = await userModel.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -57,4 +70,5 @@ module.exports = {
   register,
   login,
   logout,
+  userDetails,
 };

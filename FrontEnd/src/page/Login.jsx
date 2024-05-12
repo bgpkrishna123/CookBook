@@ -1,16 +1,22 @@
 import { useState } from "react";
 import { Flex, Box, Button, Image, Input, Text } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import axios from "axios"; 
 import "../Styles/LoginPage.css";
 import Heading from "../Components/Heading";
+import { useToast } from "@chakra-ui/react";
+import url from "../Components/vars";
 
 const LoginPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const toast = useToast();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -21,25 +27,72 @@ const LoginPage = () => {
   };
 
   const handleNameChange = (e) => {
-    setName(e.target.value);
+    setUsername(e.target.value);
   };
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (isLogin) {
-      // Handle login
+      try {
+        const response = await axios.post(`${url}/users/login`, {
+          email,
+          password,
+        });
+        localStorage.setItem("token", response.data.token);
+        toast({
+          title: "Login Successful",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        
+        localStorage.setItem("userDetails", JSON.stringify(response.data));
+        navigate("/");
+      } catch (error) {
+        setError(error.response.data.message);
+      }
     } else {
-      // Handle signup
+      if (password !== confirmPassword) {
+        setError("Passwords do not match");
+        return;
+      }
+      try {
+        const response = await axios.post(`${url}/users/register`, {
+          username,
+          email,
+          password,
+        });
+        console.log("Signup success:", response.data);
+        toast({
+          title: "Sign up successful! You can now log in.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+
+        const loginResponse = await axios.post(`${url}/users/login`, {
+          email,
+          password,
+        });
+        localStorage.setItem("userDetails", loginResponse.data);
+        console.log("Login success:", loginResponse.data);
+        navigate("/");
+      } catch (error) {
+        setError(error.response.data.message);
+      }
     }
   };
 
   const togglePage = () => {
     setIsLogin(!isLogin);
+    setError(""); 
   };
 
   return (
@@ -79,9 +132,10 @@ const LoginPage = () => {
                   <Input
                     type="text"
                     placeholder="Your Name"
-                    value={name}
+                    value={username}
                     onChange={handleNameChange}
                     mb={4}
+                    required
                   />
                 )}
                 <Input
@@ -90,6 +144,7 @@ const LoginPage = () => {
                   value={email}
                   onChange={handleEmailChange}
                   mb={4}
+                  required
                 />
                 <Input
                   type="password"
@@ -97,6 +152,7 @@ const LoginPage = () => {
                   value={password}
                   onChange={handlePasswordChange}
                   mb={4}
+                  required
                 />
                 {!isLogin && (
                   <Input
@@ -105,8 +161,10 @@ const LoginPage = () => {
                     value={confirmPassword}
                     onChange={handleConfirmPasswordChange}
                     mb={4}
+                    required
                   />
                 )}
+                {error && <Text color="red.500">{error}</Text>}
                 <Flex justifyContent="center">
                   <Button type="submit" colorScheme="teal" mr={2}>
                     {isLogin ? "Log In" : "Sign Up"}
