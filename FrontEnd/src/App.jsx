@@ -10,7 +10,7 @@ import { useState } from "react";
 import chatbot from "./assets/chatbot.png";
 import { CloseIcon } from "@chakra-ui/icons";
 function App() {
-  const [bot, setBot] = useState(true);
+  const [bot, setBot] = useState(false);
   return (
     <>
       <Box position="relative">

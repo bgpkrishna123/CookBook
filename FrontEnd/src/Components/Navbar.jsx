@@ -33,6 +33,7 @@ import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import url from "./vars";
+import { Logo } from "./Logo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
