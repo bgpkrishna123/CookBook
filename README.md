@@ -4,6 +4,12 @@
 
 RecipeGenius is an innovative recipe recommendation application designed to inspire users with culinary ideas based on their preferences, dietary restrictions, and ingredients at hand. Drawing inspiration from Yummly, RecipeGenius aims to simplify meal planning and discovery, providing a personalized experience for each user. The application will feature a vast database of recipes, a user-friendly interface for searching and filtering recipes, and personalized recommendations to cater to the unique tastes and dietary needs of its users.
 
+## Deplolyed App
+
+Frontend: https://cook-book-pied.vercel.app/
+<br>
+Backend: https://cookbook-t74e.onrender.com
+
 ## Directory Structure
 
 ```
