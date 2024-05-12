@@ -99,6 +99,10 @@ const Dashboard = () => {
     setOffset((page - 1) * limit);
   }, [page, limit]);
 
+  useEffect(() => {
+    console.log(filtered);
+  }, [page, limit, data, filtered]);
+
   return (
     <>
       <Nav />
@@ -164,40 +168,41 @@ const Dashboard = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {filtered
-                  .map((item, idx) => {
-                    return (
-                      <Tr key={idx}>
-                        <Td>{offset + idx + 1}</Td>
-                        <Td>{item.title}</Td>
-                        <Td>
-                          <Text noOfLines={3}>{item.description}</Text>
-                        </Td>
-                        <Td>{item.category}</Td>
-                        <Td>
-                          <Button
-                            onClick={() => {
-                              onOpen();
-                              setModalItem(item._id);
-                            }}
-                          >
-                            Edit
-                          </Button>
-                        </Td>
-                        <Td>
-                          <Button
-                            colorScheme="red"
-                            onClick={() => {
-                              handleDelete(item._id);
-                            }}
-                          >
-                            Delete
-                          </Button>
-                        </Td>
-                      </Tr>
-                    );
-                  })
-                  .slice(offset, offset + limit)}
+                {Array.isArray(filtered) &&
+                  filtered
+                    .map((item, idx) => {
+                      return (
+                        <Tr key={idx}>
+                          <Td>{offset + idx + 1}</Td>
+                          <Td>{item.title}</Td>
+                          <Td>
+                            <Text noOfLines={3}>{item.description}</Text>
+                          </Td>
+                          <Td>{item.category}</Td>
+                          <Td>
+                            <Button
+                              onClick={() => {
+                                onOpen();
+                                setModalItem(item._id);
+                              }}
+                            >
+                              Edit
+                            </Button>
+                          </Td>
+                          <Td>
+                            <Button
+                              colorScheme="red"
+                              onClick={() => {
+                                handleDelete(item._id);
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          </Td>
+                        </Tr>
+                      );
+                    })
+                    .slice(offset, offset + limit)}
               </Tbody>
             </Table>
           </TableContainer>
