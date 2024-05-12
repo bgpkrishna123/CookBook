@@ -27,13 +27,15 @@ import {
   ModalBody,
   ModalFooter,
   Text,
-  Center
+  Center,
+  useColorMode
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon, SearchIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import url from "./vars";
+import { Logo } from "./Logo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +45,7 @@ const Navbar = () => {
   const [userData, setUserData] = useState([]);
   const toast = useToast(); 
   const navigate = useNavigate();
-
+  const { colorMode, toggleColorMode } = useColorMode();
   useEffect(() => {
     const userDetails = JSON.parse(localStorage.getItem('userDetails')) || {};
     if (userDetails) {
@@ -92,6 +94,7 @@ const Navbar = () => {
   const handleSignUpClick = () => {
     navigate("/login-signup");
   };
+  
 
   return (
     <>
@@ -105,8 +108,8 @@ const Navbar = () => {
             onClick={toggle}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box>
-              <Image src="../Logo/CookBook.jpg" alt="Logo" height={20} minW={70} />
+            <Box as="a" href="/">
+              <Logo />
             </Box>
             <Flex>
               <InputGroup>
@@ -144,6 +147,9 @@ const Navbar = () => {
               </Box>
             </HStack>
           </HStack>
+          <Button onClick={toggleColorMode}>
+                {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+              </Button>
           <Flex alignItems={"center"}>
             {isWideEnough ? (
               isLoggedIn ? (

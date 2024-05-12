@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Grid, Box, Button, Image, Spinner, Flex } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import url from './vars';
-
 
 const Container = () => {
   const [data, setData] = useState([]);
@@ -12,13 +11,16 @@ const Container = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const sentinelRef = useRef(null);
+  const { title } = useParams(); // Get the title from URL params
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true); 
+      setLoading(true);
       try {
         const response = await axios.get(`${url}/recipes/?page=${currentPage}&limit=${itemsPerPage}`);
-        setData((prevData) => [...prevData, ...response.data]);
+        // Filter the data based on the title if it exists
+        const filteredData = title ? response.data.filter(item => item.title.toLowerCase().includes(title.toLowerCase())) : response.data;
+        setData((prevData) => [...prevData, ...filteredData]);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -27,7 +29,7 @@ const Container = () => {
     };
 
     fetchData();
-  }, [currentPage, itemsPerPage]);
+  }, [currentPage, itemsPerPage, title]); // Include title in dependency array
 
   useEffect(() => {
     const options = {
@@ -83,7 +85,7 @@ const Container = () => {
             <div ref={sentinelRef} style={{ visibility: 'hidden', height: 1 }}></div>
           </Grid>
           {loading && (
-            <Flex justifyContent="center" alignItems="center" marginTop="20px"> 
+            <Flex justifyContent="center" alignItems="center" marginTop="20px">
               <Spinner color="teal" size="xl" thickness="4px" />
             </Flex>
           )}
