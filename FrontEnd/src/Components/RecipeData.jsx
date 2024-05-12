@@ -82,7 +82,7 @@ const RecipeData = () => {
           src="https://cdn-icons-png.flaticon.com/128/151/151910.png"
           alt="Transparent Heart Icon"
         />
-        
+        <br />
         <p color='black'>Save</p>
       </>
     )}
