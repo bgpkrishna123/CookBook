@@ -46,6 +46,7 @@ const Dashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const getData = async () => {
+    console.log(url);
     try {
       const res = await Axios.get(url + "/recipes");
       setData(res.data);
