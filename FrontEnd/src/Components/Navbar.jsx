@@ -16,7 +16,7 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
-  useMediaQuery, 
+  useMediaQuery,
   Avatar,
   useToast,
   Modal,
@@ -27,13 +27,14 @@ import {
   ModalBody,
   ModalFooter,
   Text,
-  Center
+  Center,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import url from "./vars";
+import { Logo } from "./Logo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,35 +42,36 @@ const Navbar = () => {
   const [isWideEnough] = useMediaQuery("(min-width: 766px)");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState([]);
-  const toast = useToast(); 
+  const toast = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userDetails = JSON.parse(localStorage.getItem('userDetails')) || {};
+    const userDetails = JSON.parse(localStorage.getItem("userDetails")) || {};
     if (userDetails) {
-      const token = localStorage.getItem('token'); 
-      axios.get(`${url}/users`, {
-        headers: {
-          Authorization: `Bearer ${token}`, 
-          "Content-Type": "application/json",
-        },
-      })
-      .then(response => {
-        setUserData(response.data); 
-        localStorage.setItem('userInfo', JSON.stringify(response.data)||[]);
+      const token = localStorage.getItem("token");
+      axios
+        .get(`${url}/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          setUserData(response.data);
+          localStorage.setItem("userInfo", JSON.stringify(response.data) || []);
 
-        setIsLoggedIn(true);
-      })
-      .catch(error => {
-        console.error("Error:", error.message);
-        setIsLoggedIn(false);
-      });
+          setIsLoggedIn(true);
+        })
+        .catch((error) => {
+          console.error("Error:", error.message);
+          setIsLoggedIn(false);
+        });
     }
   }, []);
-  
+
   const handleLogout = () => {
-    localStorage.removeItem('userDetails');
-    localStorage.removeItem('token');
+    localStorage.removeItem("userDetails");
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
     setUserData("");
     localStorage.removeItem("userInfo");
@@ -81,8 +83,6 @@ const Navbar = () => {
       isClosable: true,
       position: "top",
     });
-    
-    
   };
 
   const toggle = () => setIsOpen(!isOpen);
@@ -95,22 +95,32 @@ const Navbar = () => {
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} mb={2} position="sticky" top={0} zIndex={999}>
+      <Box
+        bg={useColorModeValue("gray.100", "gray.900")}
+        px={4}
+        mb={2}
+        position="sticky"
+        top={0}
+        zIndex={999}
+      >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon boxSize={7}/>}
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon boxSize={7} />}
             aria-label={"Open Menu"}
             display={{ md: "none" }}
             onClick={toggle}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box>
-              <Image src="../Logo/CookBook.jpg" alt="Logo" height={20} minW={70} />
+            <Box as="a" href="/">
+              <Logo />
             </Box>
             <Flex>
               <InputGroup>
-                <InputLeftElement pointerEvents="none" children={<SearchIcon color="gray.300" />} />
+                <InputLeftElement
+                  pointerEvents="none"
+                  children={<SearchIcon color="gray.300" />}
+                />
                 <Input type="text" placeholder="Search..." />
               </InputGroup>
               <Box margin={2}>
@@ -122,8 +132,17 @@ const Navbar = () => {
                     cursor={"pointer"}
                     minW={0}
                   >
-                    <svg width="30" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" cursor="pointer">
-                      <path fill="#F58332" d="M9 5a1 1 0 1 0 0 2a1 1 0 0 0 0-2zM6.17 5a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 0 1 0-2h1.17zM15 11a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h7.17zM9 17a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h1.17z"/>
+                    <svg
+                      width="30"
+                      height="30"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                      cursor="pointer"
+                    >
+                      <path
+                        fill="#F58332"
+                        d="M9 5a1 1 0 1 0 0 2a1 1 0 0 0 0-2zM6.17 5a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 0 1 0-2h1.17zM15 11a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-1.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h7.17zM9 17a1 1 0 1 0 0 2a1 1 0 0 0 0-2zm-2.83 0a3.001 3.001 0 0 1 5.66 0H19a1 1 0 1 1 0 2h-7.17a3.001 3.001 0 0 1-5.66 0H5a1 1 0 1 1 0-2h1.17z"
+                      />
                     </svg>
                   </MenuButton>
                   <MenuList>
@@ -135,11 +154,44 @@ const Navbar = () => {
                 </Menu>
               </Box>
             </Flex>
-            <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
-              <Box as="a" px={2} py={1} rounded={"md"} _hover={{ textDecoration: "none", bg: "#319795", color: "white" }} href={"#"} color="#319795" fontWeight="bold" fontSize="md" onClick={()=>navigate("/")}>
+            <HStack
+              as={"nav"}
+              spacing={4}
+              display={{ base: "none", md: "flex" }}
+            >
+              <Box
+                as="a"
+                px={2}
+                py={1}
+                rounded={"md"}
+                _hover={{
+                  textDecoration: "none",
+                  bg: "#319795",
+                  color: "white",
+                }}
+                href={"#"}
+                color="#319795"
+                fontWeight="bold"
+                fontSize="md"
+                onClick={() => navigate("/")}
+              >
                 HOME
               </Box>
-              <Box as="a" px={2} py={1} rounded={"md"} _hover={{ textDecoration: "none", bg: "#319795", color: "white" }} href={"#"} color="#319795" fontWeight="bold" fontSize="md">
+              <Box
+                as="a"
+                px={2}
+                py={1}
+                rounded={"md"}
+                _hover={{
+                  textDecoration: "none",
+                  bg: "#319795",
+                  color: "white",
+                }}
+                href={"#"}
+                color="#319795"
+                fontWeight="bold"
+                fontSize="md"
+              >
                 MY RECIPETIN
               </Box>
             </HStack>
@@ -158,9 +210,13 @@ const Navbar = () => {
                     <Avatar name={userData.username} src={userData.Image} />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem fontWeight={"bold"} onClick={openModal}>Account</MenuItem>
+                    <MenuItem fontWeight={"bold"} onClick={openModal}>
+                      Account
+                    </MenuItem>
                     <MenuDivider />
-                    <MenuItem onClick={handleLogout} fontWeight={"bold"}>Logout</MenuItem>
+                    <MenuItem onClick={handleLogout} fontWeight={"bold"}>
+                      Logout
+                    </MenuItem>
                   </MenuList>
                 </Menu>
               ) : (
@@ -179,33 +235,39 @@ const Navbar = () => {
               )
             ) : (
               <Menu>
-              <MenuButton
-                as={Button}
-                rounded={"full"}
-                variant={"link"}
-                cursor={"pointer"}
-                minW={0}
-              >
-                <Avatar name={userData.username} src={userData.Image} />
-              </MenuButton>
-              <MenuList>
-                {isLoggedIn ? (
-                  <>
-                    <MenuItem fontWeight={"bold"} onClick={openModal}>Account</MenuItem>
-                    <MenuDivider />
-                    <MenuItem fontWeight={"bold"} onClick={handleLogout}>Logout</MenuItem>
-                  </>
-                ) : (
-                 <>
-       
-                    <MenuItem fontWeight={"bold"} onClick={handleSignUpClick}>Sign Up</MenuItem>
-                    <MenuDivider />
-                    <MenuItem fontWeight={"bold"} onClick={handleSignUpClick}>LogIn</MenuItem>
+                <MenuButton
+                  as={Button}
+                  rounded={"full"}
+                  variant={"link"}
+                  cursor={"pointer"}
+                  minW={0}
+                >
+                  <Avatar name={userData.username} src={userData.Image} />
+                </MenuButton>
+                <MenuList>
+                  {isLoggedIn ? (
+                    <>
+                      <MenuItem fontWeight={"bold"} onClick={openModal}>
+                        Account
+                      </MenuItem>
+                      <MenuDivider />
+                      <MenuItem fontWeight={"bold"} onClick={handleLogout}>
+                        Logout
+                      </MenuItem>
                     </>
-                )}
-              </MenuList>
-            </Menu>
-            
+                  ) : (
+                    <>
+                      <MenuItem fontWeight={"bold"} onClick={handleSignUpClick}>
+                        Sign Up
+                      </MenuItem>
+                      <MenuDivider />
+                      <MenuItem fontWeight={"bold"} onClick={handleSignUpClick}>
+                        LogIn
+                      </MenuItem>
+                    </>
+                  )}
+                </MenuList>
+              </Menu>
             )}
           </Flex>
         </Flex>
@@ -213,18 +275,58 @@ const Navbar = () => {
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-              <Box as="a" px={2} py={1} rounded={"md"} _hover={{ textDecoration: "none", bg: useColorModeValue("gray.200", "gray.700") }} href={"/"}>
+              <Box
+                as="a"
+                px={2}
+                py={1}
+                rounded={"md"}
+                _hover={{
+                  textDecoration: "none",
+                  bg: useColorModeValue("gray.200", "gray.700"),
+                }}
+                href={"/"}
+              >
                 HOME
               </Box>
-              <Box as="a" px={2} py={1} rounded={"md"} _hover={{ textDecoration: "none", bg: useColorModeValue("gray.200", "gray.700") }} href={"#"}>
+              <Box
+                as="a"
+                px={2}
+                py={1}
+                rounded={"md"}
+                _hover={{
+                  textDecoration: "none",
+                  bg: useColorModeValue("gray.200", "gray.700"),
+                }}
+                href={"#"}
+              >
                 MY RECIPETIN
               </Box>
               {!isLoggedIn && (
                 <>
-                  <Box as="a" px={2} py={1} rounded={"md"} _hover={{ textDecoration: "none", bg: useColorModeValue("gray.200", "gray.700") }} href={"/login-signup"}>
+                  <Box
+                    as="a"
+                    px={2}
+                    py={1}
+                    rounded={"md"}
+                    _hover={{
+                      textDecoration: "none",
+                      bg: useColorModeValue("gray.200", "gray.700"),
+                    }}
+                    href={"/login-signup"}
+                  >
                     LogIn
                   </Box>
-                  <Box as="a" px={2} py={1} rounded={"md"} _hover={{ textDecoration: "none", bg: useColorModeValue("gray.200", "gray.700") }} href={"/login-signup"}>
+                  <Box
+                    as="a"
+                    px={2}
+                    py={1}
+                    rounded={"md"}
+                    _hover={{
+                      textDecoration: "none",
+                      bg: useColorModeValue("gray.200", "gray.700"),
+                    }}
+                    href={"/login-signup"}
+                  >
                     SignUp
                   </Box>
                 </>
@@ -233,43 +335,75 @@ const Navbar = () => {
           </Box>
         ) : null}
 
-<Modal isOpen={isModalOpen} onClose={closeModal} isCentered>
-  <ModalOverlay />
-  <ModalContent>
-    <ModalHeader>
-      <Text textAlign="center" fontWeight="bold" fontSize="xl">ACCOUNT</Text>
-      <Flex  mt={4}>
-        <Avatar name={userData.username} src={userData.Image} mr={3} />
-        <Text>{userData.username}</Text>
-      </Flex>
-    </ModalHeader>
-    <ModalCloseButton />
-    <ModalBody>
-  <Stack spacing={4}>
-    <Text fontSize="lg" _hover={{ color: useColorModeValue("teal.500", "teal.300") ,fontWeight:"bold"}}>
-      Username: {userData.username}
-    </Text>
-    <Text fontSize="lg" _hover={{ color: useColorModeValue("teal.500", "teal.300")  ,fontWeight:"bold"}}>
-      Email: {userData.email}
-    </Text>
-    <Text fontSize="lg" _hover={{ color: useColorModeValue("teal.500", "teal.300")  ,fontWeight:"bold"}}>
-      Phone: 7632138889
-    </Text>
-    <Text fontSize="lg" _hover={{ color: useColorModeValue("teal.500", "teal.300")  ,fontWeight:"bold"}}>
-      Gender: Male
-    </Text>
-    <Text fontSize="lg" _hover={{ color: useColorModeValue("teal.500", "teal.300")  ,fontWeight:"bold"}}>
-      Role: {userData.role}
-    </Text>
-  </Stack>
-</ModalBody>
-    <ModalFooter>
-      <Text textAlign={"center"}color={"grey"}>@Wellcome to CookBook</Text>
-    </ModalFooter>
-  </ModalContent>
-</Modal>
-
-
+        <Modal isOpen={isModalOpen} onClose={closeModal} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>
+              <Text textAlign="center" fontWeight="bold" fontSize="xl">
+                ACCOUNT
+              </Text>
+              <Flex mt={4}>
+                <Avatar name={userData.username} src={userData.Image} mr={3} />
+                <Text>{userData.username}</Text>
+              </Flex>
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Stack spacing={4}>
+                <Text
+                  fontSize="lg"
+                  _hover={{
+                    color: useColorModeValue("teal.500", "teal.300"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Username: {userData.username}
+                </Text>
+                <Text
+                  fontSize="lg"
+                  _hover={{
+                    color: useColorModeValue("teal.500", "teal.300"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Email: {userData.email}
+                </Text>
+                <Text
+                  fontSize="lg"
+                  _hover={{
+                    color: useColorModeValue("teal.500", "teal.300"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Phone: 7632138889
+                </Text>
+                <Text
+                  fontSize="lg"
+                  _hover={{
+                    color: useColorModeValue("teal.500", "teal.300"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Gender: Male
+                </Text>
+                <Text
+                  fontSize="lg"
+                  _hover={{
+                    color: useColorModeValue("teal.500", "teal.300"),
+                    fontWeight: "bold",
+                  }}
+                >
+                  Role: {userData.role}
+                </Text>
+              </Stack>
+            </ModalBody>
+            <ModalFooter>
+              <Text textAlign={"center"} color={"grey"}>
+                @Wellcome to CookBook
+              </Text>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Box>
     </>
   );
