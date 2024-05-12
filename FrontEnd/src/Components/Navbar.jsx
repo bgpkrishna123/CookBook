@@ -16,14 +16,15 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
-  useMediaQuery 
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import { Logo } from "./Logo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isWideEnough] = useMediaQuery("(min-width: 766px)"); 
+  const [isWideEnough] = useMediaQuery("(min-width: 766px)");
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -39,13 +40,8 @@ const Navbar = () => {
             onClick={toggle}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box>
-              <Image
-                src="../Logo/CookBook.jpg"
-                alt="Logo"
-                height={20}
-                minW={70}
-              />
+            <Box as="a" href="/">
+              <Logo />
             </Box>
             <Box>
               <InputGroup>
@@ -95,12 +91,12 @@ const Navbar = () => {
                 fontWeight="bold"
                 fontSize="md"
               >
-              MY RECIPETIN
+                MY RECIPETIN
               </Box>
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
-            {isWideEnough && ( 
+            {isWideEnough && (
               <Flex>
                 <Link to="/login-signup">
                   <Button variant={"solid"} colorScheme={"teal"} mr={4}>
