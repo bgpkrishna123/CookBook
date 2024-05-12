@@ -85,8 +85,7 @@ const LoginPage = () => {
           email,
           password,
         });
-        localStorage.setItem("userDetails", loginResponse.data);
-        console.log("Login success:", loginResponse.data);
+        localStorage.setItem("userDetails",JSON.stringify (loginResponse.data));
         navigate("/");
       } catch (error) {
         setError(error.response.data.message);
