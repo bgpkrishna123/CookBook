@@ -6,7 +6,7 @@ RecipeGenius is an innovative recipe recommendation application designed to insp
 
 ## Deplolyed App
 
-Frontend: https://cook-book-pied.vercel.app/
+Frontend: https://cook-book-pied.vercel.app
 <br>
 Backend: https://cookbook-t74e.onrender.com
 
