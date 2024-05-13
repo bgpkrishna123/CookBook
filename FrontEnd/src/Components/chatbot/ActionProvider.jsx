@@ -1,8 +1,9 @@
 import React from "react";
 import axios from "axios";
+import url from "../vars";
 
 const getResponse = async (message) => {
-  const res = await axios.post("http://localhost:7700/gemini", {
+  const res = await axios.post(`${url}/gemini`, {
     message,
   });
   return res;
